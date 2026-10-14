@@ -1,0 +1,6 @@
+interface:
+  display_name: "maalsadiqeen Reel"
+  short_description: "Hadith carousel cards → dignified formal-Arabic faceless Instagram Reel (30–60 s) with sanad verification."
+  default_prompt: "Turn the uploaded hadith cards into a Reel using the maalsadiqeen-reel skill: extract content.json, score three Arabic hooks, plan, render, QA, and give me the post kit."
+policy:
+  allow_implicit_invocation: true
