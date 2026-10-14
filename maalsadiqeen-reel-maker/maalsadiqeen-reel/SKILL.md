@@ -3,13 +3,14 @@ name: maalsadiqeen-reel
 description: Use when the user wants a reel / short vertical video (ریل، ویدیو، ریلز، reel, Reels) for the Instagram page «مع الصادقين» (@maalsadiqeen, maalsadiqeen), or shares the page's branded Arabic sheets (ورق، پست، پوستر، کارت — cream paper, green arc, tree logo) carrying a verse, ḥadīth, sanad grading, scholar quote, question or occasion and wants them turned into a 30–60 s faceless video — including re-cuts, A/B hooks, 4:5 feed variants, covers, beat sheets, captions, "same style as the Ṣādiqīn reel", or any Arabic religious short-form video in this page's style. Triggers even without an āyah on the sheets and even if the user only asks for a hook, a caption or a QC of an existing cut.
 license: Proprietary — made for the maalsadiqeen page; third-party assets per assets/sfx/CREDITS.md and font licences (OFL).
 metadata:
+  title: Maalsadiqeen Reel Maker — ریل‌ساز مع الصادقین
   version: 2.0.0
   brand: maalsadiqeen
   output: 1080x1920 MP4 (30 fps, ≤60 s) + cover + beat sheet + post kit
   requires: python3 ≥3.9 (numpy, pillow), ffmpeg/ffprobe, node ≥22 + hyperframes 0.8.x (default engine) — or node + remotion 4 (alternate engine)
 ---
 
-# maalsadiqeen-reel — from the page's sheets to a finished reel
+# Maalsadiqeen Reel Maker (`maalsadiqeen-reel`) — from the page's sheets to a finished reel
 
 Turn one or more branded sheets of «مع الصادقين» into a dignified, text-led, viral-ready vertical video:
 read the sheets, decide the story, write فصيح Arabic copy, compile a project from a JSON spec, build the

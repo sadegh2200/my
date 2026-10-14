@@ -1,18 +1,31 @@
 # my — مجموعهٔ اسکیل‌ها (Agent Skills)
 
 مخزنِ اسکیل‌های ایجنت (قالب استاندارد `SKILL.md` — قابل استفاده در Claude Code، Codex، Cursor و هر ایجنتی که از
-[Agent Skills](https://agentskills.io) پشتیبانی می‌کند). هر پوشهٔ سطح‌بالا یک اسکیل کامل و مستقل است.
+[Agent Skills](https://agentskills.io) پشتیبانی می‌کند). پوشهٔ اصلی `maalsadiqeen-reel-maker/` اسکیل نهایی ما را در خود دارد؛
+هفت پوشهٔ دیگرِ سطح‌بالا اسکیل‌های مرجعِ دانلودشده‌اند (هر کدام یک اسکیل کامل و مستقل).
 
-## اسکیل‌های اختصاصی (ساخت خودمان)
+## پوشهٔ اصلی — اسکیل نهایی: «ریل‌ساز مع الصادقین» (Maalsadiqeen Reel Maker)
 
-| پوشه | کار |
+| پوشه | چیست |
 |---|---|
-| `maalsadiqeen-reel/` | **اسکیل نهایی (v2.0)** — خط تولید کامل ریل برای صفحهٔ «مع الصادقین»: ورق‌های برند → بریف → هوک امتیازدهی‌شده → spec → ساخت (HyperFrames، موتور پیش‌فرض) → تلاوت/طراحی صدا/مسترینگ → گیت QC → رندر → کاور، بیت‌شیت فارسی، پست‌کیت. موتور Remotion به‌عنوان جایگزین داخل همین اسکیل است (`references/remotion-studio.md`). |
+| [`maalsadiqeen-reel-maker/`](maalsadiqeen-reel-maker/) | **پوشهٔ اصلی اسکیل نهایی (v2.0).** عنوان: «ریل‌ساز مع الصادقین» · نام فنی اسکیل: `maalsadiqeen-reel`. ورق‌های برند صفحهٔ «مع الصادقین» → بریف → هوک امتیازدهی‌شده → spec → ساخت (HyperFrames، موتور پیش‌فرض) → تلاوت/طراحی صدا/مسترینگ → گیت QC → رندر → کاور، بیت‌شیت فارسی، پست‌کیت. موتور Remotion به‌عنوان جایگزین داخل همین اسکیل است. |
+| ↳ [`maalsadiqeen-reel-maker/README.md`](maalsadiqeen-reel-maker/README.md) | عنوان، نصب، راهنمای فارسی صاحب صفحه |
+| ↳ [`maalsadiqeen-reel-maker/maalsadiqeen-reel/`](maalsadiqeen-reel-maker/maalsadiqeen-reel/) | خودِ اسکیل (`SKILL.md`, `scripts/`, `references/`, `assets/`, `evals/`) — همین پوشه را نصب کنید |
+| ↳ [`maalsadiqeen-reel-maker/REVIEW-fa.md`](maalsadiqeen-reel-maker/REVIEW-fa.md) | گزارش بازبینی دو اسکیل قبلی بر اساس ۷ اسکیل مرجع، ایرادهای پیداشده و تصمیم‌های ادغام |
 
-> دو اسکیل قبلی (`maalsadiqeen-1` = Remotion و `maalsadiqeen-reel` = HyperFrames) بر اساس ۷ اسکیل مرجع زیر بازبینی و در
-> **یک** اسکیل ادغام شدند. گزارش کامل بازبینی، ایرادهای پیداشده و تصمیم‌ها: [`REVIEW-maalsadiqeen-fa.md`](REVIEW-maalsadiqeen-fa.md).
+> دو اسکیل قبلی (`maalsadiqeen-1` = Remotion و `maalsadiqeen-reel` = HyperFrames) بازبینی و در **یک** اسکیل ادغام شدند؛
+> نسخه‌های قبلی در تاریخچهٔ گیت (commit `2c02d3b`) باقی‌اند.
 
-## اسکیل‌های دانلودشده از اینترنت (برترین‌های هر دسته — ۱۴ اکتبر ۲۰۲۶)
+```bash
+# نصب اسکیل نهایی
+mkdir -p .claude/skills && cp -r maalsadiqeen-reel-maker/maalsadiqeen-reel .claude/skills/     # Claude Code
+mkdir -p ~/.agents/skills && cp -r maalsadiqeen-reel-maker/maalsadiqeen-reel ~/.agents/skills/  # Codex / Copilot / Gemini CLI …
+npx skills add sadegh2200/my --skill maalsadiqeen-reel                                          # مستقیم از گیت‌هاب
+```
+
+## اسکیل‌های مرجع دانلودشده از اینترنت (برترین‌های هر دسته — ۱۴ اکتبر ۲۰۲۶)
+
+این هفت اسکیل مبنای بازبینی و ساخت اسکیل نهایی بودند و به‌صورت دست‌نخورده از منبع اصلی‌شان کپی شده‌اند.
 
 معیار انتخاب: تعداد ستارهٔ گیت‌هاب مخزن، تعداد نصب در [skills.sh](https://www.skills.sh) (دایرکتوری رسمی اسکیل‌ها)،
 رسمی‌بودن (Anthropic / Remotion / HyperFrames)، عبور از ممیزی امنیتی skills.sh و کیفیت خودِ `SKILL.md`.
@@ -84,8 +97,9 @@ npx skills add vyralcontent/content-skills --skill viral-instagram-reels
 
 ## English summary
 
-Collection of Agent Skills (`SKILL.md` standard). One in-house skill (`maalsadiqeen-reel` v2.0 — the merged, reviewed
-final of the former `maalsadiqeen-1` + `maalsadiqeen-reel`; review report in `REVIEW-maalsadiqeen-fa.md`) plus seven
+Collection of Agent Skills (`SKILL.md` standard). **Main folder: `maalsadiqeen-reel-maker/`** — the final in-house skill
+"Maalsadiqeen Reel Maker" (skill name `maalsadiqeen-reel`, v2.0 — the merged, reviewed final of the former
+`maalsadiqeen-1` + `maalsadiqeen-reel`; review report in `maalsadiqeen-reel-maker/REVIEW-fa.md`) plus seven
 top-ranked skills vendored verbatim from their upstream repos on 2026-10-14 (ranked by GitHub stars, skills.sh installs,
 official status and security audits):
 

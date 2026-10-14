@@ -2,8 +2,9 @@
 
 **تاریخ:** ۱۴ اکتبر ۲۰۲۶ · **ورودی:** `maalsadiqeen-1/` (موتور Remotion) و `maalsadiqeen-reel/` (موتور HyperFrames) ·
 **مرجع بازبینی:** ۷ اسکیل برتر دانلودشده در همین مخزن (`skill-creator`، `writing-skills`، `writing-for-agents`،
-`motion-graphics`، `remotion-best-practices`، `ig-reel`، `viral-instagram-reels`) · **خروجی:** یک اسکیل نهایی در
-`maalsadiqeen-reel/` (نسخهٔ ۲.۰).
+`motion-graphics`، `remotion-best-practices`، `ig-reel`، `viral-instagram-reels`) · **خروجی:** یک اسکیل نهایی با عنوان
+«ریل‌ساز مع الصادقین» (Maalsadiqeen Reel Maker) در پوشهٔ اصلی `maalsadiqeen-reel-maker/` — خودِ اسکیل:
+`maalsadiqeen-reel-maker/maalsadiqeen-reel/` (نام فنی `maalsadiqeen-reel`، نسخهٔ ۲.۰).
 
 ---
 
@@ -52,7 +53,7 @@
 
 - **پیش‌فرض = HyperFrames.** دلیل: کامل‌تر است (شش الگوی روایی A–F، تلاوت هم‌زمان با کلمات، گیت‌های `verify.py`،
   evals، بیت‌شیت فارسی، خروجی‌های ۴:۵/کاور)، و خودِ شما هم آن را به‌عنوان نسخهٔ نهایی ساخته بودید (پوشهٔ
-  `maalsadiqeen-reel` ابرمجموعهٔ `maalsadiqeen-1` بود و `README-fa.md` آن را «جمع‌بندی پنج اسکیل عمومی» می‌نامید).
+  `maalsadiqeen-reel` ابرمجموعهٔ `maalsadiqeen-1` بود و `README-fa.md` آن (اکنون `README.md` پوشهٔ اصلی) آن را «جمع‌بندی پنج اسکیل عمومی» می‌نامید).
 - **Remotion حذف نشد؛ تبدیل به موتور جایگزین شد** (`references/remotion-studio.md` + `remotion-schema.md` +
   `assets/remotion-template/`). دلیل: قالب Remotion صحنه‌های اختصاصی دارد که موتور اصلی ندارد (زنجیرهٔ سند متحرک با
   مهر «ثقة»، مُهر نتیجه، چیپ‌های پیشرفت) و ریل «شیعتنا المسلّمون» با آن ساخته شده است. این دقیقاً الگوی توصیه‌شدهٔ
@@ -65,18 +66,20 @@
 ## ۵) ساختار نهایی
 
 ```
-maalsadiqeen-reel/
-├── SKILL.md                 ← یک درِ ورودی: قواعد، انتخاب موتور، گردش‌کار ۰–۷، جدول تصمیم، فایل‌ها، «done means»
-├── README-fa.md             ← راهنمای فارسی صاحب صفحه
-├── LICENSE · agents/openai.yaml
-├── references/  brand · content-analysis · hooks-ar · narrative · arabic-copy · blocks · audio · motion ·
-│                qc · publish · troubleshooting · remotion-studio · remotion-schema          (۱۳ فایل، یک‌سطحی)
-├── scripts/     env.sh · hook_score_ar · post_kit · extract_brand            (مشترک)
-│                new_spec · build_reel · recite · cues · mix · gen_bed · tighten · verify · render.sh ·
-│                export_variants · beat_sheet                                 (HyperFrames)
-│                setup_studio · validate_content · plan · make_audio · render (Remotion)
-├── assets/      fonts · brand · sfx (+CREDITS) · gsap.min.js · hyperframes.json · examples · remotion-template
-└── evals/       evals.json (۵ سناریو) · rubric.md · files/README.md
+maalsadiqeen-reel-maker/             ← پوشهٔ اصلی: «ریل‌ساز مع الصادقین»
+├── README.md                        ← عنوان، نصب، راهنمای فارسی صاحب صفحه
+├── REVIEW-fa.md                     ← همین گزارش
+└── maalsadiqeen-reel/               ← خودِ اسکیل (نام فنی maalsadiqeen-reel)
+    ├── SKILL.md                     ← یک درِ ورودی: قواعد، انتخاب موتور، گردش‌کار ۰–۷، جدول تصمیم، فایل‌ها، «done means»
+    ├── LICENSE · agents/openai.yaml
+    ├── references/  brand · content-analysis · hooks-ar · narrative · arabic-copy · blocks · audio · motion ·
+    │                qc · publish · troubleshooting · remotion-studio · remotion-schema      (۱۳ فایل، یک‌سطحی)
+    ├── scripts/     env.sh · hook_score_ar · post_kit · extract_brand            (مشترک)
+    │                new_spec · build_reel · recite · cues · mix · gen_bed · tighten · verify · render.sh ·
+    │                export_variants · beat_sheet                                 (HyperFrames)
+    │                setup_studio · validate_content · plan · make_audio · render (Remotion)
+    ├── assets/      fonts · brand · sfx (+CREDITS) · gsap.min.js · hyperframes.json · examples · remotion-template
+    └── evals/       evals.json (۵ سناریو) · rubric.md · files/README.md
 ```
 
 ## ۶) چه چیزی واقعاً آزمایش شد
