@@ -1,163 +1,159 @@
 ---
 name: maalsadiqeen-reel
-description: Turn a scholarly Shia carousel post (hadith + rijal/sanad verification + explanation + sources, 3–6 cards in any layout) into a dignified, formal-Arabic, faceless 30–60 s Instagram Reel (text + music, no voice) in the maalsadiqeen house style — kinetic typography, animated sanad chain with ثقة stamps and a verdict seal, share-oriented CTA. Use when the user uploads hadith cards/images or asks for a Reel, ريلز, فيديو, or انيميشن for a hadith post. Covers intake (vision → content.json), hook writing/scoring in Arabic, timing/pagination planning, brand extraction, royalty-free audio, Remotion rendering, QA, and the caption/pinned-comment kit.
-license: MIT
+description: Use when the user asks for a reel/video/ریل/ویدیو for the Instagram page «مع الصادقين» (maalsadiqeen, @maalsadiqeen), or shares branded Arabic "sheets"/ورق/پست/پوستر (cream paper, green arc, tree logo) with a verse, ḥadīth, scholar quote, question or occasion and wants them turned into a 30–60 s vertical video — including re-cuts, A/B hooks, 4:5 feed variants, covers, beat sheets, captions or "same style as the Ṣādiqīn reel". Also use when any Arabic religious short-form video is requested in this page's style, even without an āyah on the sheets.
+license: Proprietary — made for the maalsadiqeen page; third-party assets per assets/sfx/CREDITS.md and font licences (OFL).
 metadata:
-  author: maalsadiqeen / Arena.ai agent
   version: 1.0.0
-  upstream: ig-reel (hooks, scoring) · short-editing (safe zones, loudness, post copy) · video-editing (ffmpeg QA, "edit, don't generate") · remotion-best-practices (composition rules)
+  brand: maalsadiqeen
+  output: 1080x1920 MP4 (30 fps, ≤60 s) + cover + beat sheet
+  requires: node>=22, hyperframes 0.8.x, ffmpeg, python3 (numpy, pillow)
 ---
 
-# maalsadiqeen-reel
+# maalsadiqeen-reel — from the page's sheets to a finished reel
 
-Produce a Reel that is **با وقار** (dignified), beautiful, viral and faithful to the source: every on-screen
-word is formal Arabic (فصحى) copied from the user's cards, nothing is invented, the sanad is shown as
-the proof, and the viewer is asked to *send* it to someone — the strongest 2026 reach signal.
+Turn one or more branded sheets of «مع الصادقين» into a dignified, text-led, viral-ready vertical
+video: you read the sheets, decide the story, write فصيح Arabic copy, compile a HyperFrames project
+from a JSON spec, build the soundtrack (recitation + sound design, no narrator), verify with
+snapshots, render, and hand over master + cover + beat sheet with a Persian summary. Everything the
+five generic skills (video, motion-design, hyperframes, remotion-best-practices, instagram-viral) did
+for this page is encoded here as scripts and references — do not re-derive it.
 
-The pipeline is **data-driven**: you never edit React. You write `content.json` (what), run `plan.py`
-to get `plan.json` (when / how big), and render the fixed Remotion template. Iterate only through JSON.
+## Non-negotiables
 
-```
-cards (images)  ──vision──▶  content.json  ──validate──▶  hooks (3, scored ≥ 65)
-      ──plan.py──▶  plan.json  ──extract_brand / make_audio──▶  render.py  ──QA──▶  post_kit.py
-```
+1. **No human or synthetic narrator** unless the user asks for one in this conversation. Qurʾan
+   recitation is welcome when the reel contains an āyah. The reel must make full sense muted.
+2. **≤ 60 s, 9:16 1080×1920, 30 fps**; default length 45 s (36–50 s window).
+3. **Brand = paper, green, gold** (`references/brand.md`). No new colours, fonts, or effects.
+4. **Copy is فصيح, متين, fully vocalised** where sacred/quoted (`references/arabic-copy.md`). Never
+   alter or "repair" a verse/ḥadīth from memory; quote the sheet, flag unreadable spots to the user.
+5. **No invented references or gradings.** No source on the sheet → no proof block (say so).
+6. **verify.py must pass before `render`.** Look at `qc/sheet.jpg` with your own eyes every time.
+7. Reply to the user in Persian; on-screen copy in Arabic (Persian only if explicitly requested).
 
-## 0. Preflight (once per machine)
+## Workflow
 
-```bash
-SKILL=/home/user/skills/maalsadiqeen-reel
-python3 $SKILL/scripts/setup_studio.py --dest ~/reel-studio            # template + npm install + Chrome + audio + tsc
-# existing Remotion project on this box?  add: --link-node-modules /home/user/reel-maalsadiqeen/node_modules
-pip install -q imageio-ffmpeg                                             # loudness/duration probe (optional, not persisted)
-```
-
-Memory on this sandbox is ≈1 GB: render with `--concurrency 1`, never run Studio and a render together.
-A 45 s render takes ≈3 min — start it with `start_process`, keep working, then `get_process_output … wait_for exit`.
-
-## 1. Intake — read the cards with vision
-
-Look at **every** card image (`read_file`) and classify each one; the number and background of the
-cards vary (3, 4, 5…), so detect roles by content, not by position:
-
-| Card looks like | Role | content.json |
-|---|---|---|
-| Vocalized hadith under an arc ornament, «قال الإمام …», a one-line thesis below | **hadith** (+ `hook` material, `hadith.bridge`) | `hadith.intro`, `hadith.lines[]`, `hadith.bridge` |
-| Numbered traits / conditions / meanings, each with 1–2 sentences | **points** (2–5) | `points[]` |
-| A single supporting narration, tafsir or scholar's explanation | **bayan** | `bayan` |
-| Narrator names with ثقة/ضعيف/إمامي… or «السند صحيح/معتبر» | **sanad** | `sanad.chain[]`, `sanad.verdict` |
-| «المصادر»: book, volume, page | **sources** | `sources[]` (keep ≤ 4, Arabic digits) |
-| Logo / handle / ornament corners | **brand** | `brand.handle`, `extract_brand.py` |
-
-Rules of transcription (read `references/content-extraction.md` before the first job):
-- Copy the hadith **letter-for-letter with its tashkeel**; split at the natural pauses into lines of ≤ 6 words
-  (≤ 42 letters). Mark the first clause `style:"lead"`, the consequence («فليس منّا», «فمِيتتُهُ…») `style:"warning"`.
-- Points: `title` = the exact words of the hadith for that trait; `desc` ≤ 2 short lines **in the card's own wording**
-  — never add doctrine the card does not contain. If the card quotes another narration, put it in `quote`.
-- Sanad: one node per narrator, in the order printed on the card (author → Imam); copy grades verbatim;
-  `imam:true` on the Infallible. `verdict` is mandatory when a chain is shown.
-- Anything you cannot read with certainty → ask the user; never guess a name, a grade or a page number.
-- Scenes you have no card for are simply omitted (`points`, `bayan`, `sanad` are optional).
-
-Write `~/reel-studio/jobs/<slug>/content.json` using `references/schema.md`; the two files in
-`assets/examples/` are complete, working references (4-card and 3-card variants).
-
-## 2. Validate, then write and score three hooks
+### 0 · Toolchain (every session — the sandbox forgets)
 
 ```bash
-python3 $SKILL/scripts/validate_content.py jobs/<slug>/content.json --public ~/reel-studio/public
-python3 $SKILL/scripts/hook_score_ar.py "hook A" "hook B" "hook C" --out jobs/<slug>/hooks.json
+SK=/home/user/skills/maalsadiqeen-reel      # wherever this skill is installed
+source $SK/scripts/env.sh                   # prints missing pieces + exact install commands
 ```
+Fix whatever it reports (`references/troubleshooting.md`). Never run two renders or checks at once.
 
-Fix every ERROR (emoji, colloquial, Persian letters, missing verdict, >10 hadith lines). Warnings are
-layout advice — honour them unless the card forces otherwise.
-Hooks: 3–8 words, a question or a number, second person, stakes, no clickbait. Use the formulas in
-`references/hooks-ar.md`; the best one (score ≥ 65, ideally ≥ 80) becomes `hook.line1/line2`, with the
-key word in `hook.highlight` and the Imam's name in `hook.sub`. Show the three candidates to the user
-in the final message — hooks are the most common thing they want to change.
+### 1 · Read the sheets → brief (`references/content-analysis.md`)
 
-## 3. Plan timing, pagination and type sizes
+Open every attached image (`read_file`). Transcribe sacred text, references, scholar comments, the
+page's framing. Classify (A verse+ḥadīth+grading · B ḥadīth only · C scholar/concept · D FAQ ·
+E occasion · F objection) and write the one-sentence idea, hinge word, surprise, authority,
+take-away. Save it as `work/<slug>/brief.md`. If the sheets hold two ideas, propose two reels.
+
+When research adds value (hook benchmarks, verifying a reference, a recitation choice), do it now,
+briefly; cite sources in the brief. Do not scrape Instagram.
+
+### 2 · Scenario = spec (`references/narrative.md`, `references/blocks.md`)
 
 ```bash
-python3 $SKILL/scripts/plan.py jobs/<slug>/content.json --target 46     # 30–60 s hard limits
+S=$SK/scripts; W=/home/user/work/<slug>; mkdir -p $W
+python3 $S/new_spec.py --archetype A --duration 45 --out $W/spec.json [--recitation 9:119]
+```
+Replace every «…» with the final copy. Rules of thumb: hook word on screen by 1.2 s; one `<em>`
+hinge word per line at most; ≤ 70 words on screen in total; one hero line; CTA ≥ 6.4 s with
+«أَرْسِلْهَا لِمَنْ تُحِبّ» and the brand card. Keep explicit `cues` only where the audio dictates
+them (verse words); otherwise let the builder pace by reading speed.
+
+With a verse: fetch the recitation first and size the verse scene from it.
+```bash
+python3 $S/recite.py 9:119 --out $W/recite.wav            # prints duration → verse scene ≥ duration + 1.6 s
+python3 $S/cues.py $W/recite.wav --words 8 --offset <verse scene start> --json   # → scenes[verse].cues.words
 ```
 
-`plan.py` reads Arabic on-screen reading speed (≈2.3 words/s), paginates long hadiths (balanced pages,
-«تتمّةُ الحديث» label), shrinks sanad rows for long chains (row = min(112, 800/N)), sizes type to the
-longest line, inserts 5-frame crossfades and schedules every SFX cue. Read its summary:
-- `pace` < 0.6 → content is too heavy: drop a point into the caption or split into two Reels.
-- `pace` = 1.12 with total < 40 s → content is light: add `bayan` (one supporting narration) rather than
-  stretching holds.
-- Target 42–48 s for hadith + points + sanad; 36–42 s for hadith + bayan + sanad.
-Never hand-edit frame numbers unless the user asks for a specific beat; re-run `plan.py` instead.
-
-## 4. Brand and audio
+### 3 · Build
 
 ```bash
-python3 $SKILL/scripts/extract_brand.py "cards/1.jpg" --out ~/reel-studio/public      # logo.png, branch.png, brand.json
-python3 $SKILL/scripts/make_audio.py --out ~/reel-studio/public/audio --plan jobs/<slug>/plan.json --maqam bayati
+python3 $S/build_reel.py $W/spec.json --out $W/project    # → index.html + spec.resolved.json; read every WARN
 ```
+Fix WARNs by editing the spec (never the generated HTML, except as a last resort for one-offs).
 
-Look at the extracted PNGs (`read_file`) — if the logo crop is wrong, pass `--logo-box br|tl|tr` or
-`--no-logo` (the frame falls back to the `@handle` text). Keep `DEFAULT_PALETTE` (paper, green
-rgb(10,79,6), maroon for warnings) unless the page's cards clearly use other colours; then paste
-`brand.json → palette` into `content.brand.palette`.
-The bed is a synthesized, non-rhythmic maqam drone at −20 dB RMS (religious audiences avoid percussive
-music). If the user supplies a licensed nasheed/ambient track, save it as `public/audio/pad.wav`
-(normalize to ≈ −20 dB RMS) — never download copyrighted audio.
-
-## 5. Render and QA
+### 4 · Soundtrack (`references/audio.md`)
 
 ```bash
-python3 $SKILL/scripts/render.py --studio ~/reel-studio --content jobs/<slug>/content.json --stills-only   # 20 s layout check
-python3 $SKILL/scripts/render.py --studio ~/reel-studio --content jobs/<slug>/content.json --out ~/reel-output/<slug>
+cp $W/recite.wav $W/project/assets/audio/recite.wav 2>/dev/null; python3 $S/mix.py $W/project --dry-run   # review events
+python3 $S/mix.py $W/project                               # bed + recitation + auto SFX → assets/audio/mix.wav, prints LUFS
 ```
+Narration only on explicit request: produce stems, `tighten.py`, add to `audio.stems`, `mode: narrated`.
 
-Always look at the stills / `contact-sheet.jpg` before declaring done and run through
-`references/qa-checklist.md`: no clipped or wrapped-mid-word lines, tashkeel not colliding (large vocalized
-text uses Noto Naskh; Amiri only ≤ 90 px), nothing in the top 250 px / bottom 300 px safe zones, seal
-readable, −22…−12 LUFS, 30–60 s, cover frame = hook. Fix by editing `content.json` (split a line,
-shorten a desc) and re-planning — not by touching the template.
-
-## 6. Post kit and hand-off
+### 5 · Verify (pre-render gate, `references/qc.md`)
 
 ```bash
-python3 $SKILL/scripts/post_kit.py jobs/<slug>/content.json --hooks jobs/<slug>/hooks.json -o ~/reel-output/<slug>/post.md
+python3 $S/verify.py $W/project                            # pacing · html · hyperframes check · snapshots → qc/sheet.jpg
 ```
+`read_file $W/project/qc/sheet.jpg`. Check typography, clipping, gold emphasis, seal, watermark,
+brand card. Iterate spec → build → mix → verify until 0 failures and the frames look right. If the
+cover frame (hero + 0.9 s) would not stop a scroll, rewrite the hero/hook — now, not after rendering.
 
-Deliver: `<slug>.mp4`, `cover.jpg`, `post.md` (caption with keyword-rich first line, pinned rijal
-comment, alt hooks, publish checklist). Present the MP4 with `present_file`; summarize in the user's
-language (Persian for this user) the structure, the three hooks, and the two or three decisions they
-may want to flip (hook, trait wording, colour of the warning line).
+### 6 · Render (3.5–6 min)
 
-## Dignity rules (non-negotiable)
+```bash
+bash $S/render.sh $W/project /home/user/deliver/<slug>.mp4          # use start_process; one render at a time
+python3 $S/verify.py $W/project --render /home/user/deliver/<slug>.mp4 --no-check
+```
+Grab 4–6 frames from the MP4 with ffmpeg and compare to the snapshots (a blank render = `dir=rtl` on
+`<html>` or missing fonts).
 
-- Formal Arabic only; no emoji, no Latin, no slang, no exclamation stacks, no "لن تصدق".
-- Never depict the Prophet or the Imams; no faces, no AI "cinematic" people. Ornament, paper, type only.
-- Honorifics stay attached: «عليه السلام», «صلى الله عليه وآله» — never abbreviated on screen.
-- Warnings («فليس منّا») are maroon and underlined, not red flashes; stakes are shown, not shouted.
-- Sources and the verdict are always on screen; the pinned comment carries the full chain.
-- The CTA asks to *send* and *save*; it never begs for follows.
+### 7 · Deliverables (`references/publish.md`)
 
-## Why it is viral (built-in, do not strip)
+```bash
+python3 $S/export_variants.py /home/user/deliver/<slug>.mp4 --out /home/user/deliver --name <slug> --spec $W/project/spec.resolved.json [--feed] [--audio]
+python3 $S/beat_sheet.py $W/project --spec $W/spec.json --out /home/user/deliver/<slug>-beat-sheet.md --lang fa
+```
+Write the caption (3–5 lines + ≤ 5 hashtags, reference in line 1–2) into the beat sheet or
+`<slug>-caption.txt`. `present_file` the MP4. In the Persian summary give: idea + archetype, the
+scene table (time, copy, source), audio plan, what was verified (check/snapshots/LUFS/duration),
+posting advice (cover, caption, A/B or Trial Reels, metrics to watch), and any flagged uncertainty
+(unreadable word, missing reference).
 
-Hook ≤ 1.5 s reading time with an open loop → the hadith reveals word-group by word-group (watch time) →
-progress chips make the viewer wait for «٣/٣» → the sanad verification is the share-trigger for a
-scholarly audience (credibility = DM shares) → the seal is the emotional peak with a visual "hit" →
-the CTA names the recipient («لمن يُحبُّهم») → a fade to the paper lets the loop restart cleanly.
-See `references/virality.md` for the ranking-signal mapping and what to measure after posting.
+## Decision points
 
-## What each upstream skill contributes (upgraded here)
-
-| Upstream | Taken | Upgraded |
-|---|---|---|
-| ig-reel | 26 hook formulas, hookscore heuristics, 3-second rule | 12 Arabic scholarly formulas, `hook_score_ar.py` (dignity penalties, tashkeel tip) |
-| short-editing | 9:16 safe zones, −14/−16 LUFS targets, caption structure | safe zones baked into the template; −20 dB bed + per-cue SFX gains; Arabic caption + pinned-comment kit |
-| video-editing | ffmpeg probe/loudness, "edit don't generate" | `render.py` QA (ebur128, duration gate, contact sheet); brand assets are *extracted* from the real cards, not generated |
-| remotion-best-practices | `calculateMetadata`, `staticFile`, `@remotion/media` Audio, Sequence timing, local fonts | data-driven composition (JSON in, duration out), zero-range `interpolate` guards, font loading before render |
+| situation | do |
+|---|---|
+| sheets contain an āyah | archetype A (or E); recitation `ar.mahermuaiqly`; verse words cued from `cues.py` |
+| no āyah, a ḥadīth with reference | B; `quote` with `reveal: words`; proof cards without seal unless a grading is stated |
+| only a scholar's point / concept | C; contrast block carries the turn; hero = the text that settles it |
+| question-type sheet | D; answer as `list` (≤ 3) or `quote`; keep the answer scene ≥ 8 s |
+| date / person / occasion | E; `title` card first; no contrast; final = greeting line |
+| objection / شبهة | F; calm tone, quote the objection neutrally, never name opponents |
+| user asks for narration | narrated mode: stems + `tighten.py` + `cues.py --lines`; target −14 LUFS; Persian runs 20 % longer |
+| user asks for a variant | A/B: change scene 1 only; feed: `export_variants.py --feed`; Persian version: translate copy, shrink sizes/`nowrap` |
+| user wants > 60 s | refuse politely; propose a two-part series with the same opening signature |
+| toolchain missing / render impossible | still deliver spec + beat sheet + snapshots if check runs; otherwise brief + spec and the exact commands |
 
 ## Files
 
-- `assets/template/` — Remotion project (src/scenes/{Hook,Hadith,Points,Bayan,Sanad,CTA}.tsx, ui.tsx, theme.tsx, fonts, SFX)
-- `assets/examples/shiatuna/` (4 cards → 5 scenes, 46 s) · `assets/examples/variant-bayan/` (3 cards → bayan, 42 s)
-- `scripts/` — setup_studio · validate_content · hook_score_ar · plan · extract_brand · make_audio · render · post_kit
-- `references/` — content-extraction · schema · hooks-ar · design-system · virality · qa-checklist
+| path | purpose |
+|---|---|
+| `scripts/env.sh` | env vars + toolchain check (source it first) |
+| `scripts/new_spec.py` | archetype scaffolds A–F |
+| `scripts/build_reel.py` | spec → HyperFrames project; block library (hook, verse, contrast, answer, proof, cta, quote, list, title); exact Arabic font fitting; reading-speed cues |
+| `scripts/recite.py`, `scripts/cues.py` | recitation download/trim; word/line onset detection |
+| `scripts/mix.py`, `scripts/gen_bed.py`, `scripts/tighten.py` | soundtrack: bed, recitation, auto sound design, ducking, mastering; narration tightening |
+| `scripts/verify.py`, `scripts/render.sh` | QC gates (pre/post render); check+render wrapper |
+| `scripts/export_variants.py`, `scripts/beat_sheet.py` | cover, 4:5, 1:1, audio stem; Persian/Arabic/English beat sheet |
+| `references/brand.md` | tokens, typography, grid, motion personality, tone |
+| `references/content-analysis.md` | reading the sheets, classification, brief template |
+| `references/narrative.md` | archetypes A–F with timings; hook formulas allowed/rejected |
+| `references/arabic-copy.md` | register, quoting, tashkeel checklist, line budgets, caption skeleton |
+| `references/blocks.md` | spec format, every block's fields and cues, timing recipes, extending |
+| `references/audio.md`, `references/motion.md` | pipeline details; HyperFrames/GSAP rules and choreography |
+| `references/qc.md`, `references/publish.md`, `references/troubleshooting.md` | gates & defects; posting playbook; sandbox fixes |
+| `assets/examples/sadiqeen-9-119.silent.json` | the delivered 45 s reel (archetype A) — the gold standard |
+| `assets/examples/hadith-only.json` | archetype B/C example without a verse (40 s) |
+| `assets/{fonts,brand,sfx,gsap.min.js,hyperframes.json}` | everything the builder copies into a project |
+| `evals/evals.json`, `evals/rubric.md`, `evals/files/sheet-*.jpg` | test prompts with the real sheets |
+| `README-fa.md` | Persian guide for the page owner |
+
+## Done means
+
+- `deliver/<slug>.mp4` passes `verify.py --render` (1080×1920, ≤ 60 s, AAC, LUFS within ±1.2 of target).
+- `deliver/<slug>-cover.jpg`, `deliver/<slug>-beat-sheet.md` (+ caption) exist.
+- Snapshots were inspected; every quoted text matches the sheets; every reference comes from the sheets.
+- The Persian summary states what was built, what was verified, and what the user should check.
