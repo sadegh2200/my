@@ -1,0 +1,30 @@
+[
+  {
+    "card": 1,
+    "original_filename": "اصحاب احدی و خمسین 1.jpg",
+    "file": "source/cards/01-hadith.jpg",
+    "sha256": "372c9506be355e990c76ba83eb10071edb4b74e3cba27431629d5dc2c72a1832",
+    "role": "hadith and references"
+  },
+  {
+    "card": 2,
+    "original_filename": "اصحاب احدی و خمسین2.jpg",
+    "file": "source/cards/02-bayan.jpg",
+    "sha256": "2e921eb2ea1f8c8cbe908abfbd64724cdba12c69d6f70cdb60e917114da4a26e",
+    "role": "supporting narration"
+  },
+  {
+    "card": 3,
+    "original_filename": "اصحاب احدی و خمسین3.jpg",
+    "file": "source/cards/03-sanad.jpg",
+    "sha256": "74bad0bb10a9e49bf12f61402ab3174652bb3a8cfb9bdf2fdd00614f935c8e7c",
+    "role": "chain and verdict"
+  },
+  {
+    "card": 4,
+    "original_filename": "اصحاب احدی و خمسین4.jpg",
+    "file": "source/cards/04-rijal.jpg",
+    "sha256": "acf9cdf4edd6bd1136d0f034e6c06919d3fcc90f189f6e29c208d6e6d8a9248a",
+    "role": "narrator assessments"
+  }
+]
