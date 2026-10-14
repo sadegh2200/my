@@ -6,7 +6,7 @@ setup_studio.py — create (or refresh) the Remotion studio folder from the skil
                             [--skip-install] [--skip-browser]
 
 What it does
-  1. copies assets/template → <dest> (src/, public/fonts, public/img/noise.png, bundled SFX, configs);
+  1. copies assets/remotion-template → <dest> (src/, public/fonts, public/img/noise.png, bundled SFX, configs);
      existing public/content.json, plan.json, img/logo.png, img/branch.png, audio/pad.wav are preserved
   2. npm install (remotion 4.0.535 pinned) — or symlinks an existing node_modules to save time/disk
   3. npx remotion browser ensure (downloads Chrome Headless Shell if missing)
@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-TEMPLATE = ROOT / "assets" / "template"
+TEMPLATE = ROOT / "assets" / "remotion-template"
 PRESERVE = ["public/content.json", "public/plan.json", "public/img/logo.png", "public/img/branch.png", "public/audio/pad.wav", "public/brand.json"]
 APT_LIBS = ["libnss3", "libatk-bridge2.0-0", "libgtk-3-0", "libgbm1", "libasound2", "libxss1", "libxshmfence1", "fonts-noto-core", "fonts-kacst", "fonts-hosny-amiri"]
 

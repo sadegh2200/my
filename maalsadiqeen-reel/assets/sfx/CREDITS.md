@@ -1,47 +1,25 @@
-# SFX Credits
+# SFX & asset credits
 
-All sound effects in this directory are sourced from [Pixabay](https://pixabay.com/sound-effects/) and used under the [Pixabay Content License](https://pixabay.com/service/license-summary/).
+## Bundled sound effects (`assets/sfx/`)
 
-The Pixabay license allows free use for commercial and non-commercial purposes without attribution, but attribution is appreciated and given here for transparency.
+| file | origin | licence |
+|---|---|---|
+| `chime.mp3`, `click-soft.mp3`, `impact-bass-1.mp3`, `impact-bass-2.mp3`, `ping.mp3`, `pop.mp3`, `riser.mp3`, `sparkle.mp3`, `whoosh.mp3`, `whoosh-short.mp3` | copied from the HyperFrames `media-use/audio` bundled library, which sources them from [Pixabay](https://pixabay.com/sound-effects/) | [Pixabay Content License](https://pixabay.com/service/license-summary/) — commercial and non-commercial use, modification and redistribution inside derivative works, no attribution required (given here for transparency) |
+| `pen-scratch.wav` | synthesised procedurally (band-passed noise burst, seeded) by this skill's author | no third-party rights |
 
-## Files
+Only the files that `scripts/mix.py` actually uses are bundled (`whoosh.mp3` and `whoosh-short.mp3` are
+currently the same recording under the two names the mixer expects). Everything else in the soundtrack is
+generated at build time: the ambient bed by `scripts/gen_bed.py`, Qurʾan recitation (when a verse is on
+screen) fetched by `scripts/recite.py` from the AlQuran Cloud CDN (`cdn.islamic.network`, free to use; the
+reciter is credited in the beat sheet).
 
-The following `.mp3` files are bundled with this skill:
+## Fonts (`assets/fonts/`, `assets/remotion-template/public/fonts/`)
 
-- `chime.mp3`
-- `click.mp3` / `click-soft.mp3`
-- `error.mp3`
-- `glitch-1.mp3` / `glitch-2.mp3` / `glitch-3.mp3`
-- `impact-bass-1.mp3` / `impact-bass-2.mp3`
-- `key-press.mp3`
-- `notification.mp3`
-- `ping.mp3`
-- `pop.mp3`
-- `riser.mp3`
-- `sparkle.mp3`
-- `typing.mp3`
-- `whoosh.mp3` / `whoosh-short.mp3` / `whoosh-cinematic.mp3`
+Amiri, Amiri Quran, Noto Kufi Arabic, Noto Naskh Arabic, Vazirmatn — SIL Open Font License 1.1.
 
-See `manifest.json` for per-file metadata (duration, energy character, recommended use).
+## Other bundled files
 
-## License
-
-All files are distributed under the [Pixabay Content License](https://pixabay.com/service/license-summary/), which permits:
-
-- Commercial and non-commercial use
-- Modification and remixing
-- Redistribution as part of derivative works (such as videos rendered with HyperFrames)
-
-without any attribution requirement.
-
----
-
-## maalsadiqeen-reel subset
-
-Only the files needed by `scripts/mix.py` are bundled here (whoosh-short, whoosh, sparkle, riser,
-impact-bass-1, impact-bass-2, chime, pop, click-soft, ping) — copied from the HyperFrames
-`media-use/audio` skill (Pixabay Content License, see above).
-
-`pen-scratch.wav` is synthesised procedurally (band-passed noise burst, seeded) by this skill's
-author — no third-party rights. The ambient bed is synthesised at build time by `scripts/gen_bed.py`.
-Fonts: Amiri / Amiri Quran (SIL OFL 1.1), Noto Kufi Arabic / Noto Naskh Arabic (SIL OFL 1.1).
+- `assets/gsap.min.js` — GSAP (Webflow "no charge" licence; bundled for offline builds as HyperFrames does).
+- `assets/brand/logo.png`, `logo-wm.png` — the page's own logo (property of @maalsadiqeen); the watermark
+  copy is identical today — replace `logo-wm.png` with a lighter version if a softer watermark is wanted.
+- `assets/remotion-template/public/audio/*.wav` — synthesised by `scripts/make_audio.py` (no third-party rights).

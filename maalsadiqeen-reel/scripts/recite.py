@@ -10,7 +10,7 @@ Editions that work well: ar.mahermuaiqly (default, warm & measured), ar.alafasy 
 Output: 48 kHz mono WAV, leading/trailing silence trimmed (-40 dB), 60 ms fade in/out. Prints the duration —
 copy it into the spec as the verse scene length budget (scene must be >= duration + 1.6 s).
 """
-import argparse, os, subprocess, sys, urllib.request, tempfile
+import argparse, os, subprocess, sys, urllib.request, urllib.error, tempfile
 
 AYAHS = [7, 286, 200, 176, 120, 165, 206, 75, 129, 109, 123, 111, 43, 52, 99, 128, 111, 110, 98, 135, 112, 78, 118, 64, 77,
          227, 93, 88, 69, 60, 34, 30, 73, 54, 45, 83, 182, 88, 75, 85, 54, 53, 89, 59, 37, 35, 38, 29, 18, 45, 60, 49, 62,
@@ -31,6 +31,7 @@ def main():
     ap.add_argument("--edition", default="ar.mahermuaiqly")
     ap.add_argument("--out", default="recite.wav")
     ap.add_argument("--print-url", action="store_true")
+    ap.add_argument("--from-files", nargs="*", help="already-downloaded mp3(s) for the ayat (offline / sandbox without CDN access)")
     a = ap.parse_args()
     s, rest = a.ref.split(":")
     s = int(s)
@@ -47,7 +48,16 @@ def main():
     parts = []
     for i, u in enumerate(urls):
         p = os.path.join(tmp, f"p{i}.mp3")
-        urllib.request.urlretrieve(u, p)
+        if a.from_files:
+            if i >= len(a.from_files):
+                raise SystemExit(f"--from-files needs {len(urls)} file(s) for {a.ref}")
+            p = a.from_files[i]
+        else:
+            try:
+                urllib.request.urlretrieve(u, p)
+            except (urllib.error.URLError, OSError) as e:
+                raise SystemExit(f"could not download {u}\n  ({e})\n  → no network to cdn.islamic.network: download the mp3(s) elsewhere "
+                                 f"and re-run with --from-files, or set audio.recitation.file to a local WAV in the spec")
         d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", p], capture_output=True, text=True).stdout.strip() or 0)
         if d < 1.0:
             raise SystemExit(f"{u} looks like a stub ({os.path.getsize(p)} bytes, {d:.2f}s) — try --edition ar.alafasy")

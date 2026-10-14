@@ -2,7 +2,7 @@
 """
 validate_content.py — schema + Arabic quality gate for content.json.
 
-    python3 validate_content.py content.json [--public assets/template/public] [--strict]
+    python3 validate_content.py content.json [--public assets/remotion-template/public] [--strict]
 
 Exit code 1 on errors; warnings are printed but do not fail (unless --strict).
 Checks: required keys, line-length limits (readability at 1080×1920), formal-Arabic hygiene

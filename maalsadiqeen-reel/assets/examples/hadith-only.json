@@ -1,7 +1,7 @@
 {
   "id": "nahj-172-jahl",
   "title": "الناس أعداء ما جهلوا — لماذا نعادي؟",
-  "duration": 40,
+  "duration": 41,
   "brand": { "handle": "maalsadiqeen" },
   "audio": { "mode": "silent", "file": "mix.wav", "bed": { "gain_db": -7 }, "auto_sfx": true, "target_lufs": -15.5 },
   "scenes": [
@@ -30,7 +30,7 @@
       "line1": "المَعْرِفَةُ أَوَّلُ الإِنْصَاف",
       "line2": "وَالجَهْلُ أَوَّلُ العَدَاوَة" },
 
-    { "id": "s6", "type": "cta", "start": 33.6, "end": 40,
+    { "id": "s6", "type": "cta", "start": 33.6, "end": 41,
       "line1": "اعْرِفْ أَوَّلاً", "line2": "ثُمَّ <em>احْكُم</em>",
       "share": "أَرْسِلْهَا لِمَنْ تُحِبّ",
       "final": "النَّاسُ أَعْدَاءُ مَا جَهِلُوا", "final_font": "amiri",

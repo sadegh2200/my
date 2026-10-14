@@ -142,10 +142,11 @@ def main():
         qa["duration_s"] = probe_duration(ff, video)
         lufs, tp = loudness(ff, video)
         qa["integrated_lufs"], qa["true_peak_dbfs"] = lufs, tp
-        if lufs is not None and not (-22 <= lufs <= -12):
-            qa.setdefault("warnings", []).append(f"loudness {lufs} LUFS outside −22…−12 — adjust audio.bed_volume / SFX vols")
-        if tp is not None and tp > -1.0:
-            qa.setdefault("warnings", []).append(f"true peak {tp} dBFS > −1 — lower boom/stamp volumes in plan.sfx")
+        # same mastering target as the HyperFrames engine (references/brand.md): −15.5 LUFS, true peak ≤ −1.5 dBTP
+        if lufs is not None and not (-17.5 <= lufs <= -13.5):
+            qa.setdefault("warnings", []).append(f"loudness {lufs} LUFS outside −15.5 ± 2 — adjust audio.bed_volume / SFX vols")
+        if tp is not None and tp > -1.5:
+            qa.setdefault("warnings", []).append(f"true peak {tp} dBFS > −1.5 — lower boom/stamp volumes in plan.sfx")
     else:
         qa["note"] = "ffmpeg not found (pip install imageio-ffmpeg) — loudness not measured"
     dur = qa.get("duration_s") or qa["planned_seconds"]

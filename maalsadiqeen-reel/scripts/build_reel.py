@@ -434,7 +434,9 @@ def blk_contrast(sc, ctx):
     if sc.get("line3"):
         h.append(f'<div class="block l3 kufi" id="{sid}-l3" style="font-size:{fit(sc["line3"], "kufi", 64, 40)}px">{em(sc["line3"])}</div>')
     if sc.get("line4"):
-        h.append(f'<div class="block l4 naskh" id="{sid}-l4" style="font-size:{fit(sc["line4"], "naskh", 52, 34)}px">{em(sc["line4"]).replace("class=\"em\"", "class=\"em later\"")}</div>')
+        # the gold word of line4 lights up later (cue line4_gold) → mark it "later"
+        line4_html = em(sc["line4"]).replace('class="em"', 'class="em later"')
+        h.append(f'<div class="block l4 naskh" id="{sid}-l4" style="font-size:{fit(sc["line4"], "naskh", 52, 34)}px">{line4_html}</div>')
     h.append("</div></section>")
     ctx.html.append("\n".join(h))
     js = [f"// ---- {sid} contrast", f'sceneIn("#{sid} .stage", {sc["start"]});',

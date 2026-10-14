@@ -5,7 +5,7 @@ verification) for an educated Arabic-speaking audience. The video identity is a 
 paper sheets*: cream paper, dark green text, gold accents, a thin green arc with diamonds, an olive
 sprig top-right, the tree logo. Nothing flashy; every motion must feel like ink settling on paper.
 
-## Tokens (already baked into `build_reel.py`'s CSS)
+## Tokens (baked into `build_reel.py`'s CSS and into the Remotion template's `DEFAULT_PALETTE`)
 
 | token | value | use |
 |---|---|---|
@@ -14,6 +14,9 @@ sprig top-right, the tree logo. Nothing flashy; every motion must feel like ink 
 | gold | `#957238`, `#cdb078` (gradient end) | emphasis word, underline, rule, seal ring, labels |
 | ink | `#2d2b27`, ink-2 `#5a5650` | prose, attributions, labels |
 | line | `#8aa58f` | arc divider |
+
+Remotion template mapping: `green`, `gold`, `goldSoft`, `ink`, `inkSoft`, `olive` = the tokens above; the
+warning-clause token `maroon` = deep gold-ink `#7a5a24` (emphasis without red).
 | grain | SVG turbulence, opacity 0.085, multiply | paper texture |
 | vignette | radial `rgba(70,52,28,0.17)` | edge focus |
 

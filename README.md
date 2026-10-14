@@ -7,8 +7,10 @@
 
 | پوشه | کار |
 |---|---|
-| `maalsadiqeen-reel/` | خط تولید کامل ریل برای صفحهٔ «مع الصادقین» (HyperFrames) |
-| `maalsadiqeen-1/` | نسخهٔ Remotion همان خط تولید (کارت حدیث → ریل) |
+| `maalsadiqeen-reel/` | **اسکیل نهایی (v2.0)** — خط تولید کامل ریل برای صفحهٔ «مع الصادقین»: ورق‌های برند → بریف → هوک امتیازدهی‌شده → spec → ساخت (HyperFrames، موتور پیش‌فرض) → تلاوت/طراحی صدا/مسترینگ → گیت QC → رندر → کاور، بیت‌شیت فارسی، پست‌کیت. موتور Remotion به‌عنوان جایگزین داخل همین اسکیل است (`references/remotion-studio.md`). |
+
+> دو اسکیل قبلی (`maalsadiqeen-1` = Remotion و `maalsadiqeen-reel` = HyperFrames) بر اساس ۷ اسکیل مرجع زیر بازبینی و در
+> **یک** اسکیل ادغام شدند. گزارش کامل بازبینی، ایرادهای پیداشده و تصمیم‌ها: [`REVIEW-maalsadiqeen-fa.md`](REVIEW-maalsadiqeen-fa.md).
 
 ## اسکیل‌های دانلودشده از اینترنت (برترین‌های هر دسته — ۱۴ اکتبر ۲۰۲۶)
 
@@ -82,7 +84,8 @@ npx skills add vyralcontent/content-skills --skill viral-instagram-reels
 
 ## English summary
 
-Collection of Agent Skills (`SKILL.md` standard). Two in-house skills (`maalsadiqeen-reel`, `maalsadiqeen-1`) plus seven
+Collection of Agent Skills (`SKILL.md` standard). One in-house skill (`maalsadiqeen-reel` v2.0 — the merged, reviewed
+final of the former `maalsadiqeen-1` + `maalsadiqeen-reel`; review report in `REVIEW-maalsadiqeen-fa.md`) plus seven
 top-ranked skills vendored verbatim from their upstream repos on 2026-10-14 (ranked by GitHub stars, skills.sh installs,
 official status and security audits):
 

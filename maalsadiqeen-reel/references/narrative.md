@@ -63,6 +63,9 @@ actual claim in gold) → **quote** hero (the decisive text) → **proof** (card
 
 ## Hook formulas that fit this brand (from the ig-reel skill, filtered for dignity)
 
+The full table of 12 formal-Arabic formulas, the writing rules and the three-hook routine are in
+`hooks-ar.md`; score candidates with `scripts/hook_score_ar.py` (publish ≥ 65, aim ≥ 80). The short list:
+
 | formula | pattern | example |
 |---|---|---|
 | Open question on a known text | «‹قطعة من النص› … فَمَنْ/فَمَا/فَلِمَاذَا …؟» | «كُونُوا مَعَ الصَّادِقِينَ» … فَمَنْ هُمُ الصَّادِقُون؟ |

@@ -23,14 +23,14 @@ Score with `scripts/hook_score_ar.py` (target ≥ 80; publish nothing below 65).
 
 - Formal Arabic with tashkeel on the decisive word only (the `highlight`); full tashkeel makes the hook slow.
 - Second person (تكون / أنت / -ك) raises self-relevance; «هل» and «لماذا» open the loop.
-- Put the Imam's name in `hook.sub`, not in the hook itself, unless the formula needs it (4, 11, 12).
+- Put the Imam's name in the hook scene's `sub` line, not in the hook itself, unless the formula needs it (4, 11, 12).
 - Numbers in words when ≤ 10 (ثلاثُ صفات), digits for pages/volumes only.
 - Forbidden: «لن تصدق», «صادم», «عاجل», emoji, «!!», Latin, dialect (ليش / شلون / شنو), any threat the hadith does not make.
-- The cover frame shows the hook: keep it inside the centre 4:5 crop (template handles this).
+- The cover frame shows the hook (or the hero line): keep it inside the centre 4:5 crop (both engines handle this).
 
 ## Three-hook routine
 
 1. Write one *question*, one *number/condition*, one *stakes* hook.
 2. `python3 scripts/hook_score_ar.py "…" "…" "…" --out hooks.json`
-3. Best → `hook.line1/line2`; split at the natural pause so each line ≤ 4 words when possible.
-4. Keep the other two in post.md (alt hooks) for the cover text A/B or a re-cut after 48 h.
+3. Best → the hook scene's `line1/line2` (spec) or `hook.line1/line2` (content.json); split at the natural pause so each line ≤ 4 words when possible.
+4. Keep the other two (`post_kit.py --hooks hooks.json` lists them in post.md) for the cover text A/B or a re-cut after 48 h.

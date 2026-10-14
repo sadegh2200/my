@@ -4,20 +4,25 @@ import type { Palette } from "./types";
 export const W = 1080;
 export const H = 1920;
 
-/** Paper & olive — the maalsadiqeen look. Override any token via content.brand.palette */
+/**
+ * Paper, green, gold — the maalsadiqeen look. Tokens follow references/brand.md (the single source of
+ * truth for both engines). Override any token via content.brand.palette.
+ * "maroon" is kept as a token name for the warning clause, but the brand never uses red: it maps to a
+ * deep gold-ink so the clause reads as emphasis, not alarm.
+ */
 export const DEFAULT_PALETTE: Palette = {
-  bgCenter: "#FCF7F1",
-  bgMid: "#F3EEE6",
-  bgEdge: "#D8D3CC",
-  ink: "#2A2219",
-  inkSoft: "#5B534A",
-  green: "#0B5E1E",
-  olive: "#808E74",
-  oliveSoft: "#A9B39F",
-  gold: "#B9AA8C",
-  goldSoft: "#D6CDBB",
-  maroon: "#7A2424",
-  chip: "#EAF2E6",
+  bgCenter: "#F4EFE6",
+  bgMid: "#EBE4D7",
+  bgEdge: "#DDD4C3",
+  ink: "#2D2B27",
+  inkSoft: "#5A5650",
+  green: "#1F4A35",
+  olive: "#8AA58F",
+  oliveSoft: "#B5C6B8",
+  gold: "#957238",
+  goldSoft: "#CDB078",
+  maroon: "#7A5A24",
+  chip: "#E7EEE6",
 };
 
 export const F = {
