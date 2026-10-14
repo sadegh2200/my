@@ -1,0 +1,287 @@
+{
+  "id": "ashab-51",
+  "title": "إحدى وخمسون ركعة — قراءة في النص والسند",
+  "duration": 51,
+  "brand": {
+    "handle": "maalsadiqeen"
+  },
+  "watermark": {
+    "show": true,
+    "from": 4.2,
+    "until": 42.1
+  },
+  "audio": {
+    "mode": "silent",
+    "file": "mix.wav",
+    "bed": {
+      "gain_db": -9,
+      "fade_out": 2.4,
+      "seed": 51
+    },
+    "auto_sfx": false,
+    "sfx": [
+      {
+        "name": "whoosh-short",
+        "at": 0.34,
+        "gain_db": -30
+      },
+      {
+        "name": "ping",
+        "at": 1.9,
+        "gain_db": -29
+      },
+      {
+        "name": "whoosh-short",
+        "at": 3.6,
+        "gain_db": -28
+      },
+      {
+        "name": "click-soft",
+        "at": 4.2,
+        "gain_db": -29
+      },
+      {
+        "name": "click-soft",
+        "at": 7.0,
+        "gain_db": -30
+      },
+      {
+        "name": "whoosh-short",
+        "at": 12.0,
+        "gain_db": -28
+      },
+      {
+        "name": "click-soft",
+        "at": 12.6,
+        "gain_db": -29
+      },
+      {
+        "name": "click-soft",
+        "at": 15.0,
+        "gain_db": -30
+      },
+      {
+        "name": "whoosh-short",
+        "at": 20.2,
+        "gain_db": -28
+      },
+      {
+        "name": "click-soft",
+        "at": 20.5,
+        "gain_db": -28
+      },
+      {
+        "name": "impact-bass-2",
+        "at": 26.0,
+        "gain_db": -26
+      },
+      {
+        "name": "click-soft",
+        "at": 28.0,
+        "gain_db": -28
+      },
+      {
+        "name": "whoosh-short",
+        "at": 31.4,
+        "gain_db": -28
+      },
+      {
+        "name": "click-soft",
+        "at": 33.0,
+        "gain_db": -27
+      },
+      {
+        "name": "click-soft",
+        "at": 36.3,
+        "gain_db": -27
+      },
+      {
+        "name": "click-soft",
+        "at": 39.6,
+        "gain_db": -29
+      },
+      {
+        "name": "whoosh-short",
+        "at": 42.6,
+        "gain_db": -28
+      },
+      {
+        "name": "whoosh",
+        "at": 45.1,
+        "gain_db": -28
+      },
+      {
+        "name": "chime",
+        "at": 48.4,
+        "gain_db": -29
+      }
+    ],
+    "target_lufs": -15.5,
+    "true_peak_db": -1.5
+  },
+  "editorial": {
+    "archetype": "C — scholarly investigation with a number-led question",
+    "scope": "The verdict concerns only the first narration's chain, as assessed on supplied card 3. No independent authentication is claimed.",
+    "narration": false,
+    "hadith_excerpt_not_full_text": true,
+    "supporting_narration_is_not_authentication": true,
+    "seal_allowed": false,
+    "sources": "source/transcription.md",
+    "reading_budget_note": "Primary copy stays below 70 words; narrator names, attribution labels and source locators are counted separately in QC. Full four-card text is retained in source/transcription.md and the publication notes."
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "hook",
+      "start": 0,
+      "end": 3.6,
+      "lead": "٥١ رَكْعَةً…",
+      "lead_font": "amiri",
+      "line1": "هَلْ تَعْرِفُ",
+      "line2": "سَنَدَهَا؟",
+      "source_cards": [
+        1
+      ],
+      "copy_kind": "editorial question"
+    },
+    {
+      "id": "s2",
+      "type": "quote",
+      "start": 3.6,
+      "end": 12.0,
+      "label": "رُوِيَ عَنِ الصَّادِقِ عَلَيْهِ السَّلَامُ",
+      "text": [
+        "أَصْحَابُ إِحْدَى",
+        "وَ خَمْسِينَ رَكْعَةً"
+      ],
+      "font": "naskh",
+      "reveal": "words",
+      "size": 100,
+      "attribution": "وسائل الشيعة · ج٤ ص٥٧",
+      "cues": {
+        "words": [
+          4.2,
+          5.15,
+          6.1,
+          7.0,
+          7.95
+        ],
+        "attribution": 9.4
+      },
+      "source_cards": [
+        1
+      ],
+      "copy_kind": "verbatim excerpt; rest of narration in caption"
+    },
+    {
+      "id": "s3",
+      "type": "quote",
+      "start": 12.0,
+      "end": 20.2,
+      "label": "مُقْتَطَفٌ مِنْ رِوَايَةٍ أُخْرَى",
+      "text": [
+        "مِنَ الْإِحْدَى",
+        "وَ خَمْسِينَ رَكْعَةً"
+      ],
+      "font": "naskh",
+      "reveal": "words",
+      "size": 100,
+      "attribution": "تأويل الآيات · ج١ ص٧١٦",
+      "cues": {
+        "words": [
+          12.6,
+          13.55,
+          14.45,
+          15.35,
+          16.3
+        ],
+        "attribution": 17.8
+      },
+      "source_cards": [
+        2
+      ],
+      "copy_kind": "verbatim excerpt; no grading of this narration"
+    },
+    {
+      "id": "s4",
+      "type": "answer",
+      "start": 20.2,
+      "end": 31.4,
+      "q1": "وَسَنَدُ الرِّوَايَةِ الْأُولَى؟",
+      "q2": "بحسب الدراسة المرفقة",
+      "hero": "السَّنَدُ لَا يَنْهَضُ",
+      "after": "عَلَى شَرْطِ الصِّحَّةِ",
+      "source": "الورقة الثالثة",
+      "cues": {
+        "q1": 20.5,
+        "q2": 23.0,
+        "hero": 26.0,
+        "after": 28.0,
+        "source": 29.5
+      },
+      "source_cards": [
+        3
+      ],
+      "copy_kind": "exact verdict wording with editorial vocalisation, scoped to the first chain"
+    },
+    {
+      "id": "s5",
+      "type": "proof",
+      "start": 31.4,
+      "end": 42.6,
+      "cards": [
+        {
+          "book": "علي بن أبي حمزة البطائني",
+          "grade": "ضُعِّفَ بشدّة عند آخرين",
+          "stacked": true
+        },
+        {
+          "book": "سالم أبو حمزة البطائني",
+          "grade": "لم يرد توثيق صريح له",
+          "stacked": true
+        }
+      ],
+      "line1": "مَوْضِعُ النَّظَرِ",
+      "attribution": "بحسب الورقتين الثالثة والرابعة",
+      "cues": {
+        "cards": [
+          33.0,
+          36.3
+        ],
+        "line1": 31.75,
+        "attribution": 39.6
+      },
+      "source_cards": [
+        3,
+        4
+      ],
+      "copy_kind": "selected narrator concerns, not the complete chain; disagreements preserved in caption"
+    },
+    {
+      "id": "s6",
+      "type": "cta",
+      "start": 42.6,
+      "end": 51,
+      "line1": "تَثَبَّتْ قَبْلَ النَّقْلِ",
+      "share": "أَرْسِلْهَا لِمَنْ تُحِبّ",
+      "final": "مَعَ الصَّادِقِينَ",
+      "final_font": "amiri",
+      "brand": {
+        "handle": "@maalsadiqeen"
+      },
+      "cues": {
+        "line1": 42.9,
+        "share": 45.0,
+        "final": 47.7,
+        "brand": 48.4
+      },
+      "source_cards": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "copy_kind": "editorial CTA and brand name; not a hadith or verse"
+    }
+  ]
+}

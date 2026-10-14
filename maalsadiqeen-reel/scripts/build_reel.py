@@ -43,6 +43,30 @@ def _pil_font(font):
             f = ImageFont.truetype(os.path.join(SKILL_ROOT, "assets", "fonts", _FONT_FILES[font]), 100)
     except Exception:
         f = None
+    if f is None:
+        # Some manylinux Pillow builds omit FriBidi/RAQM. HarfBuzz still gives
+        # exact advances for our single-script Arabic lines; estimates otherwise
+        # shrink the type needlessly (especially fully vocalised quotations).
+        try:
+            import uharfbuzz as hb
+            with open(os.path.join(SKILL_ROOT, "assets", "fonts", _FONT_FILES[font]), "rb") as fp:
+                face = hb.Face(fp.read())
+            shaped_font = hb.Font(face)
+            hb.ot_font_set_funcs(shaped_font)
+            shaped_font.scale = (face.upem, face.upem)
+
+            class ShapedMetrics:
+                def getlength(self, text, direction="rtl", language="ar"):
+                    buf = hb.Buffer()
+                    buf.add_str(text)
+                    buf.guess_segment_properties()
+                    buf.direction, buf.language = direction, language
+                    hb.shape(shaped_font, buf)
+                    return sum(p.x_advance for p in buf.glyph_positions) * 100 / face.upem
+
+            f = ShapedMetrics()
+        except (ImportError, OSError):
+            pass
     _font_cache[font] = f
     return f
 
@@ -216,6 +240,10 @@ BASE_CSS = r"""
       .blk-proof .seal-flash { position: absolute; left: 50%; top: 50%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(180,140,74,0.45), rgba(180,140,74,0) 70%); }
       .card { display: block; width: 760px; margin: 12px auto 0; padding: 12px 38px; border-radius: 999px; background: rgba(255,255,255,0.35); border: 1.5px solid rgba(31,74,53,0.35); line-height: 1.6; color: var(--ink); }
       .card b { color: var(--green); font-weight: 700; } .card .ok { color: var(--gold); }
+      .card.stacked { border-radius: 26px; padding: 22px 32px; margin-top: 22px; }
+      .card.stacked b, .card.stacked .detail { display: block; }
+      .card.stacked .detail { margin-top: 6px; color: var(--ink-2); font-weight: 400; }
+      .card.stacked .loc { color: var(--ink-2); font-size: 30px; }
       .blk-proof .p1 { line-height: 1.45; margin-top: 46px; font-weight: 700; }
       .blk-proof .p2 { line-height: 1.45; font-weight: 700; color: var(--gold); }
       .blk-proof .attr { line-height: 1.8; margin-top: 16px; color: var(--ink-2); }
@@ -434,7 +462,8 @@ def blk_contrast(sc, ctx):
     if sc.get("line3"):
         h.append(f'<div class="block l3 kufi" id="{sid}-l3" style="font-size:{fit(sc["line3"], "kufi", 64, 40)}px">{em(sc["line3"])}</div>')
     if sc.get("line4"):
-        h.append(f'<div class="block l4 naskh" id="{sid}-l4" style="font-size:{fit(sc["line4"], "naskh", 52, 34)}px">{em(sc["line4"]).replace("class=\"em\"", "class=\"em later\"")}</div>')
+        later_text = em(sc["line4"]).replace('class="em"', 'class="em later"')
+        h.append(f'<div class="block l4 naskh" id="{sid}-l4" style="font-size:{fit(sc["line4"], "naskh", 52, 34)}px">{later_text}</div>')
     h.append("</div></section>")
     ctx.html.append("\n".join(h))
     js = [f"// ---- {sid} contrast", f'sceneIn("#{sid} .stage", {sc["start"]});',
@@ -502,8 +531,19 @@ def blk_proof(sc, ctx):
         t1, t2 = (sc["seal"] + [""])[:2]
         h.append(f'<div class="seal-wrap"><div class="seal-flash" id="{sid}-flash"></div><div class="seal" id="{sid}-seal"><div class="t kufi">{em(t1)}</div><div class="t kufi">{em(t2)}</div>{CHECK_SVG}</div></div>')
     for i, c in enumerate(cards):
-        txt = f'<b>{em(c.get("book",""))}</b>' + (f' · {em(c["loc"])}' if c.get("loc") else "") + (f' · <span class="ok">{em(c["grade"])}</span>' if c.get("grade") else "")
-        h.append(f'<div class="card naskh" id="{sid}-card{i+1}" style="font-size:{fit(plain(txt), "naskh", 42, 28, width=680)}px">{txt}</div>')
+        if c.get("stacked"):
+            # A narrator's name and a nuanced grade must not be squeezed into a
+            # tiny one-line citation, or styled as an affirmative verification.
+            name = c.get("book", "")
+            txt = f'<b style="font-size:{fit(name, "naskh", 52, 36, width=680)}px">{em(name)}</b>'
+            if c.get("grade"):
+                txt += f'<span class="detail" style="font-size:{fit(c["grade"], "naskh", 42, 32, width=680)}px">{em(c["grade"])}</span>'
+            if c.get("loc"):
+                txt += f'<span class="loc">{em(c["loc"])}</span>'
+            h.append(f'<div class="card stacked naskh" id="{sid}-card{i+1}">{txt}</div>')
+        else:
+            txt = f'<b>{em(c.get("book",""))}</b>' + (f' · {em(c["loc"])}' if c.get("loc") else "") + (f' · <span class="ok">{em(c["grade"])}</span>' if c.get("grade") else "")
+            h.append(f'<div class="card naskh" id="{sid}-card{i+1}" style="font-size:{fit(plain(txt), "naskh", 42, 28, width=680)}px">{txt}</div>')
     if sc.get("line1"): h.append(f'<div id="{sid}-p1" class="block p1 amiri" style="font-size:{fit(sc["line1"], "amiri-b", 76, 48)}px">{em(sc["line1"])}</div>')
     if sc.get("line2"): h.append(f'<div id="{sid}-p2" class="block p2 amiri" style="font-size:{fit(sc["line2"], "amiri-b", 76, 48)}px">{em(sc["line2"])}</div>')
     if sc.get("attribution"): h.append(f'<div id="{sid}-attr" class="block attr naskh" style="font-size:{fit(sc["attribution"], "naskh", 34, 26)}px">{em(sc["attribution"])}</div>')

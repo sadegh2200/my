@@ -84,6 +84,8 @@ def main():
         ranked = load_json(a.hooks)
         alt_hooks = "\n".join(f"{i+1}. [{r['score']}] {r['hook']}" for i, r in enumerate(ranked[:5]))
 
+    alt_hooks_text = alt_hooks or 'run: python3 scripts/hook_score_ar.py "..." "..." --out hooks.json'
+
     md = f"""# {title} — Post kit
 
 ## Caption (copy as-is)
@@ -100,7 +102,7 @@ def main():
 
 ## Alternative hooks (A/B for the cover text or a re-cut)
 
-{alt_hooks or "run: python3 scripts/hook_score_ar.py \"...\" \"...\" --out hooks.json"}
+{alt_hooks_text}
 
 ## Publish checklist
 

@@ -12,11 +12,11 @@ import argparse, json, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 LABELS = {
     "fa": {"title": "بیت‌شیت ریل", "scene": "صحنه", "type": "بلوک", "time": "زمان", "copy": "متن روی تصویر", "cues": "کیوها (ثانیه)",
-           "audio": "طرح صدا", "ev": "رویدادهای صوتی (auto_sfx)", "src": "منابع ذکرشده", "dur": "مدت", "mode": "حالت صدا"},
+           "audio": "طرح صدا", "ev": "رویدادهای صوتی", "src": "منابع ذکرشده", "dur": "مدت", "mode": "حالت صدا"},
     "ar": {"title": "ورقة الإيقاع", "scene": "المشهد", "type": "الكتلة", "time": "الزمن", "copy": "النصّ على الشاشة", "cues": "النقاط (ثانية)",
            "audio": "خطّة الصوت", "ev": "أحداث الصوت", "src": "المصادر", "dur": "المدّة", "mode": "نمط الصوت"},
     "en": {"title": "Beat sheet", "scene": "Scene", "type": "Block", "time": "Time", "copy": "On-screen copy", "cues": "Cues (s)",
-           "audio": "Audio plan", "ev": "Audio events (auto_sfx)", "src": "Sources cited", "dur": "Duration", "mode": "Audio mode"},
+           "audio": "Audio plan", "ev": "Audio events", "src": "Sources cited", "dur": "Duration", "mode": "Audio mode"},
 }
 TEXT_KEYS = ["lead", "line1", "line2", "sub", "label", "lines", "wrong_label", "wrong", "right_label", "right", "line3", "line4",
              "q1", "q2", "hero", "after", "source", "seal", "cards", "attribution", "text", "items", "title", "kicker", "share", "final"]
@@ -26,7 +26,10 @@ def flat(v):
     if isinstance(v, list):
         return " / ".join(flat(x) for x in v)
     if isinstance(v, dict):
-        return " · ".join(str(x) for x in v.values() if x)
+        # Layout switches (e.g. stacked: true) are not on-screen words.
+        return " · ".join(str(x) for x in v.values() if x and not isinstance(x, bool))
+    if isinstance(v, bool):
+        return ""
     return str(v)
 
 

@@ -1,0 +1,12 @@
+# Reproducible toolchains and render intermediates
+node_modules/
+.venv/
+.cache/
+__pycache__/
+*.pyc
+work/
+*.log
+.DS_Store
+
+# Keep only final deliverables, source cards, specifications and reports in Git.
+# deliver/ intentionally remains tracked: the requested MP4 and cover live here.

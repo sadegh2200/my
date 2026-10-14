@@ -1,0 +1,43 @@
+[
+  {
+    "hook": "هَلْ يَكْفِي وُرُودُ الرِّوَايَةِ لِتَصْحِيحِ سَنَدِهَا؟",
+    "words": 6,
+    "score": 88,
+    "grade": "A",
+    "notes": [
+      "curiosity opener",
+      "question form",
+      "stakes present",
+      "addresses the viewer",
+      "religious specificity",
+      "challenges an assumption"
+    ]
+  },
+  {
+    "hook": "٥١ رَكْعَةً… هَلْ تَعْرِفُ سَنَدَهَا؟",
+    "words": 5,
+    "score": 81,
+    "grade": "A",
+    "notes": [
+      "curiosity opener",
+      "question form",
+      "addresses the viewer",
+      "religious specificity",
+      "concrete number",
+      "open loop / contrast"
+    ]
+  },
+  {
+    "hook": "قَبْلَ أَنْ تَنْقُلَ الحَدِيثَ… هَلْ تَعْرِفُ سَنَدَهُ؟",
+    "words": 7,
+    "score": 75,
+    "grade": "B",
+    "notes": [
+      "curiosity opener",
+      "question form",
+      "addresses the viewer",
+      "religious specificity",
+      "open loop / contrast"
+    ]
+  }
+]

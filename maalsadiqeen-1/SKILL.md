@@ -1,5 +1,5 @@
 ---
-name: maalsadiqeen-reel
+name: maalsadiqeen-1
 description: Turn a scholarly Shia carousel post (hadith + rijal/sanad verification + explanation + sources, 3–6 cards in any layout) into a dignified, formal-Arabic, faceless 30–60 s Instagram Reel (text + music, no voice) in the maalsadiqeen house style — kinetic typography, animated sanad chain with ثقة stamps and a verdict seal, share-oriented CTA. Use when the user uploads hadith cards/images or asks for a Reel, ريلز, فيديو, or انيميشن for a hadith post. Covers intake (vision → content.json), hook writing/scoring in Arabic, timing/pagination planning, brand extraction, royalty-free audio, Remotion rendering, QA, and the caption/pinned-comment kit.
 license: MIT
 metadata:
@@ -8,7 +8,7 @@ metadata:
   upstream: ig-reel (hooks, scoring) · short-editing (safe zones, loudness, post copy) · video-editing (ffmpeg QA, "edit, don't generate") · remotion-best-practices (composition rules)
 ---
 
-# maalsadiqeen-reel
+# maalsadiqeen-1 — carousel / Remotion
 
 Produce a Reel that is **با وقار** (dignified), beautiful, viral and faithful to the source: every on-screen
 word is formal Arabic (فصحى) copied from the user's cards, nothing is invented, the sanad is shown as
@@ -25,7 +25,7 @@ cards (images)  ──vision──▶  content.json  ──validate──▶  ho
 ## 0. Preflight (once per machine)
 
 ```bash
-SKILL=/home/user/skills/maalsadiqeen-reel
+SKILL=/home/user/skills/maalsadiqeen-1
 python3 $SKILL/scripts/setup_studio.py --dest ~/reel-studio            # template + npm install + Chrome + audio + tsc
 # existing Remotion project on this box?  add: --link-node-modules /home/user/reel-maalsadiqeen/node_modules
 pip install -q imageio-ffmpeg                                             # loudness/duration probe (optional, not persisted)

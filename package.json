@@ -1,0 +1,20 @@
+{
+  "name": "maalsadiqeen-reel-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Source-faithful Arabic reels for مع الصادقين",
+  "scripts": {
+    "skills:install": "python3 scripts/install_skills.py",
+    "test": "python3 -m unittest discover -s tests -v",
+    "reel:build": "bash scripts/reel.sh build",
+    "reel:check": "bash scripts/reel.sh check",
+    "reel:render": "bash scripts/reel.sh render",
+    "preview": "node scripts/preview.mjs"
+  },
+  "engines": { "node": ">=22.12" },
+  "devDependencies": {
+    "hyperframes": "0.8.157",
+    "@sparticuz/chromium": "153.0.0",
+    "@ffprobe-installer/linux-x64": "5.2.0"
+  }
+}

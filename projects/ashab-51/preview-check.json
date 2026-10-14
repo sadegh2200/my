@@ -1,0 +1,19 @@
+{
+  "rangeRequests": true,
+  "privateFilesBlocked": true,
+  "invalidRangeRejected": true,
+  "downloadLinks": true,
+  "media": {
+    "duration": 51,
+    "width": 1080,
+    "height": 1920,
+    "error": null,
+    "canPlay": "maybe"
+  },
+  "chapterSeekSeconds": 31.4,
+  "mobile": {
+    "scroll": 390,
+    "viewport": 390
+  },
+  "consoleErrors": []
+}
